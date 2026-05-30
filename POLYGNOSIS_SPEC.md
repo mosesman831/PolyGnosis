@@ -37,7 +37,7 @@ self-improvement.
 PolyGnosis operates as a single Python process (`boardroom_pipeline.py`) that
 spawns Hermes Agent subprocesses via `hermes chat -q`. Each subprocess is a
 stateless, single-turn invocation of a specific LLM with a specific role prompt.
-No persistent agent state is maintained across subprocess boundaries — all state
+No persistent agent state is maintained across subprocess boundaries - all state
 transfer occurs through the orchestrator process via filesystem artifacts and
 in-memory data structures.
 
@@ -48,19 +48,19 @@ in-memory data structures.
 │                    PolyGnosis Orchestrator                   │
 │                    (boardroom_pipeline.py)                   │
 ├─────────────────────────────────────────────────────────────┤
-│  Phase 0: build_orchestrator_prompt() → hermes chat         │
-│  Phase 1: build_solver_prompt() → hermes chat × 3 (parallel)│
-│  Phase 1.5: EARLY_RESOLUTION_PROMPT → hermes chat (optional) │
-│  Phase 2: build_critique_prompt() → hermes chat × 3 (par)   │
-│  Phase 3: build_scoring_prompt() → hermes chat + RRF/Borda  │
-│  Phase 4: build_synthesis_prompt() → hermes chat            │
-│  Phase 5: build_quality_gate_prompt() → hermes chat         │
-│  Phase 6: build_meta_review_prompt() → hermes chat          │
+│  Phase 0: build_orchestrator_prompt() -> hermes chat         │
+│  Phase 1: build_solver_prompt() -> hermes chat × 3 (parallel)│
+│  Phase 1.5: EARLY_RESOLUTION_PROMPT -> hermes chat (optional) │
+│  Phase 2: build_critique_prompt() -> hermes chat × 3 (par)   │
+│  Phase 3: build_scoring_prompt() -> hermes chat + RRF/Borda  │
+│  Phase 4: build_synthesis_prompt() -> hermes chat            │
+│  Phase 5: build_quality_gate_prompt() -> hermes chat         │
+│  Phase 6: build_meta_review_prompt() -> hermes chat          │
 ├─────────────────────────────────────────────────────────────┤
 │  Persistent State:                                           │
-│    config.yaml              — model routing configuration    │
-│    .corrections_buffer.json — Reflexion failure log          │
-│    artifacts/<run-id>/      — per-run output directory       │
+│    config.yaml              - model routing configuration    │
+│    .corrections_buffer.json - Reflexion failure log          │
+│    artifacts/<run-id>/      - per-run output directory       │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -91,12 +91,12 @@ measurable success criteria and dynamically generated expert personas.
      "problem_statement": "<self-contained problem description>",
      "success_criteria": ["<criterion>", ...],
      "domain": "<e.g. distributed systems>",
-     "personas": ["<Role — title + specialization>", ...]
+     "personas": ["<Role - title + specialization>", ...]
    }
    ```
 3. Personas are domain-inferred by the LLM. Examples:
-   - Database optimization → `["DBA Consultant", "Backend Architect", "Security Auditor"]`
-   - Compiler design → `["Parser Designer", "Optimization Engineer", "Type System Expert"]`
+   - Database optimization -> `["DBA Consultant", "Backend Architect", "Security Auditor"]`
+   - Compiler design -> `["Parser Designer", "Optimization Engineer", "Type System Expert"]`
 4. If the orchestrator returns no personas, a fallback generates `Senior <domain> Expert A/B/C`.
 
 ### 2.3 JSON Extraction
@@ -154,8 +154,8 @@ Personas are classified by regex matching against `PERSONA_TOOLSET_MAP`:
 | Write-capable (infrastructure) | `devops engineer\|platform engineer\|sre\|cloud architect\|cloud engineer\|infrastructure engineer\|infrastructure architect` | `terminal, file, web` | Infra roles need deployment tooling |
 | Write-capable (full-stack) | `fullstack\|full.stack\|full stack\|backend developer\|frontend developer\|backend engineer\|frontend engineer` | `terminal, file, web` | Full-stack developers need full access |
 | Write-capable (architect/design) | `solutions architect\|system designer\|systems architect` | `terminal, file, web` | Architects design and scaffold |
-| Write-capable (architect/design) — generic | `architect\|designer` | `terminal, file, web` | Catch-all for architect/designer titles |
-| Write-capable (developer) — generic | `developer\|engineer\|programmer\|builder\|implementer\|coder` | `terminal, file, web` | Catch-all for developer titles |
+| Write-capable (architect/design) - generic | `architect\|designer` | `terminal, file, web` | Catch-all for architect/designer titles |
+| Write-capable (developer) - generic | `developer\|engineer\|programmer\|builder\|implementer\|coder` | `terminal, file, web` | Catch-all for developer titles |
 | Read-only (default) | `""` (empty pattern matches all) | `web, file` | Conservative default: read-only |
 
 **Ordering constraint:** More specific compound patterns (e.g., `data engineer`)
@@ -263,7 +263,7 @@ The critic model returns JSON:
 
 ### 5.3 Reflexion Buffer Mechanics
 
-The Reflexion buffer implements the Reflexion pattern (Shinn et al., 2023) —
+The Reflexion buffer implements the Reflexion pattern (Shinn et al., 2023) -
 persisting failure episodes for future retrieval. The buffer is a JSON file at
 `.corrections_buffer.json` with structure:
 
@@ -284,9 +284,9 @@ persisting failure episodes for future retrieval. The buffer is a JSON file at
 ```
 
 **Ingestion rules:**
-- `severity == "CRITICAL"` or `severity == "HIGH"` → saved.
-- `severity == "MEDIUM"` or `severity == "LOW"` → discarded (noise floor).
-- All hallucinations (any severity) → saved as `severity: "HALLUCINATION"`.
+- `severity == "CRITICAL"` or `severity == "HIGH"` -> saved.
+- `severity == "MEDIUM"` or `severity == "LOW"` -> discarded (noise floor).
+- All hallucinations (any severity) -> saved as `severity: "HALLUCINATION"`.
 
 **Deduplication:** Entries are deduplicated by the first 200 characters of
 `description.strip().lower()`.
@@ -300,7 +300,7 @@ between marker lines:
 The following failures were caught in previous consensus runs.
 DO NOT repeat these mistakes:
 - [CRITICAL] Race condition in connection pool initialization
-- [HALLUCINATION] Claimed: async fn send() from reqwest — Reality: reqwest has no async send()
+- [HALLUCINATION] Claimed: async fn send() from reqwest - Reality: reqwest has no async send()
 ─── END REFLEXION BUFFER ───
 ```
 
@@ -314,7 +314,7 @@ ones. Revision rounds execute in parallel.
 At `max_debate_rounds: 2`, the flow is:
 1. Round 1: Critique all solutions (parallel)
 2. Round 1 revision: Solvers fix issues (parallel)
-3. Round 2: Critique revised solutions (parallel) — final critiques used for scoring.
+3. Round 2: Critique revised solutions (parallel) - final critiques used for scoring.
 
 ---
 
@@ -325,7 +325,7 @@ At `max_debate_rounds: 2`, the flow is:
 The scoring phase is a two-layer system to prevent any single opinionated model
 from dominating the consensus:
 
-**Layer 1 — LLM Scoring:** A scorer model evaluates each solution on five axes
+**Layer 1 - LLM Scoring:** A scorer model evaluates each solution on five axes
 (0-10 each):
 
 | Axis | Definition |
@@ -336,7 +336,7 @@ from dominating the consensus:
 | Robustness | Error handling, edge cases, input validation |
 | Security | Vulnerabilities, secure defaults, defense in depth |
 
-**Layer 2 — Deterministic Ranking:** The per-axis scores are passed to a
+**Layer 2 - Deterministic Ranking:** The per-axis scores are passed to a
 deterministic algorithm. The algorithm is configurable.
 
 ### 6.2 Reciprocal Rank Fusion (RRF)
@@ -448,9 +448,9 @@ The synthesizer receives:
 
 The prompt instructs the synthesizer to:
 1. Extract the strongest elements from each solution.
-2. Fix any remaining bugs — do not propagate known issues from critique.
+2. Fix any remaining bugs - do not propagate known issues from critique.
 3. Produce a self-contained, production-ready output.
-4. Never reference "solution X" — the output must stand alone.
+4. Never reference "solution X" - the output must stand alone.
 
 ---
 
@@ -484,7 +484,7 @@ Prevent the synthesis phase from introducing regressions.
 
 ### 8.4 Fault Tolerance
 
-If the gate model returns non-JSON, the default verdict is `PASS` — erring on
+If the gate model returns non-JSON, the default verdict is `PASS` - erring on
 the side of delivering the synthesis rather than blocking. This is logged in
 `quality_gate.json`.
 
@@ -499,7 +499,7 @@ Provide a human-readable explanation of the consensus decision.
 ### 9.2 Meta-Review Content
 
 The meta-review covers:
-1. Why the final output was chosen — which solutions contributed most.
+1. Why the final output was chosen - which solutions contributed most.
 2. Specific flaws rejected from each solver's initial draft.
 3. How the critique process improved the final output.
 4. Whether the quality gate passed and what it found.
@@ -580,17 +580,17 @@ This prevents a single critic failure from blocking the entire pipeline.
 
 If the scorer model returns non-JSON, the raw text is wrapped in
 `{"raw_text": "..."}`. The consensus ranking will be empty, and the synthesis
-phase will proceed without formal rankings — drawing from all solutions equally.
+phase will proceed without formal rankings - drawing from all solutions equally.
 
 ### 11.4 Quality Gate Failure
 
-If the gate model returns non-JSON, the default verdict is `PASS` — the
+If the gate model returns non-JSON, the default verdict is `PASS` - the
 synthesis is delivered. This is the fail-safe: better to deliver a potentially
 imperfect synthesis than to block delivery entirely.
 
 ### 11.5 Early Resolution Judge Failure
 
-If the quorum judge returns non-JSON, the default is `unanimous: false` — the
+If the quorum judge returns non-JSON, the default is `unanimous: false` - the
 pipeline proceeds to full critique. This is the conservative choice: when in
 doubt, run the full adversarial protocol.
 
@@ -634,5 +634,5 @@ per-run).
    l'Académie Royale des Sciences*.
 3. Shinn, N., Cassano, F., Gopinath, A., Narasimhan, K., & Yao, S. (2023).
    Reflexion: Language Agents with Verbal Reinforcement Learning. *NeurIPS 2023*.
-4. PolyBrain — Multi-model orchestration for Hermes Agent.
+4. PolyBrain - Multi-model orchestration for Hermes Agent.
    https://github.com/mosesman831/PolyBrain

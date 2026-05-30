@@ -38,7 +38,7 @@ PolyGnosis eliminates single-model hallucination risk by routing complex
 problems through a formal adversarial consensus protocol. Three or more
 frontier models solve independently from dynamically assigned expert
 personas. A hostile critic cross-reviews every solution. Formal ranking
-algorithms — Reciprocal Rank Fusion and Borda Count — produce mathematically
+algorithms - Reciprocal Rank Fusion and Borda Count - produce mathematically
 sound consensus. A Constitutional Quality Gate prevents synthesis regressions.
 The result: enterprise-grade output that no single model could produce alone.
 
@@ -46,19 +46,19 @@ Built from the PolyBrain orchestration pattern.
 
 ## Why PolyGnosis
 
-- **Designed for mission-critical work** — when a hallucination costs real money, reputation, or safety.
-- **Adversarial by design** — a dedicated critic model hunts bugs, edge cases, security flaws, and hallucinations in every solution.
-- **Mathematically sound consensus** — deterministic RRF and Borda Count ranking on top of LLM per-axis scoring. No single opinionated model dominates the outcome.
-- **Dynamic specialization** — the orchestrator assigns domain-appropriate expert personas (Security Auditor, DBA Consultant, Backend Architect) with matching tool restrictions.
-- **Self-improving** — severe bugs are persisted to a Reflexion corrections buffer and injected into future solver prompts.
-- **Cost-aware** — the Early Resolution circuit detects unanimous consensus and bypasses expensive critique + scoring phases.
+- **Designed for mission-critical work** - when a hallucination costs real money, reputation, or safety.
+- **Adversarial by design** - a dedicated critic model hunts bugs, edge cases, security flaws, and hallucinations in every solution.
+- **Mathematically sound consensus** - deterministic RRF and Borda Count ranking on top of LLM per-axis scoring. No single opinionated model dominates the outcome.
+- **Dynamic specialization** - the orchestrator assigns domain-appropriate expert personas (Security Auditor, DBA Consultant, Backend Architect) with matching tool restrictions.
+- **Self-improving** - severe bugs are persisted to a Reflexion corrections buffer and injected into future solver prompts.
+- **Cost-aware** - the Early Resolution circuit detects unanimous consensus and bypasses expensive critique + scoring phases.
 
 ### How PolyGnosis is different
 
-- **Multi-model adversarial, not just multi-agent** — three genuinely different model architectures solve the same problem independently, then critique each other. Unlike naive multi-agent systems, PolyGnosis enforces *model diversity* across families, not just prompt diversity.
-- **Formal scoring, not opinion** — RRF and Borda Count are deterministic algorithms borrowed from information retrieval. The LLM provides per-axis scores (0-10) but the ranking algorithm decides the winner.
-- **Constitutional Quality Gate** — after synthesis, the output is compared against the best individual solution. If the synthesis regressed, it's rejected.
-- **Asymmetric tool allocation** — personas that should read get `web, file`. Personas that should build get `terminal, file, web`. True specialization at the tool level via `hermes chat -t`.
+- **Multi-model adversarial, not just multi-agent** - three genuinely different model architectures solve the same problem independently, then critique each other. Unlike naive multi-agent systems, PolyGnosis enforces *model diversity* across families, not just prompt diversity.
+- **Formal scoring, not opinion** - RRF and Borda Count are deterministic algorithms borrowed from information retrieval. The LLM provides per-axis scores (0-10) but the ranking algorithm decides the winner.
+- **Constitutional Quality Gate** - after synthesis, the output is compared against the best individual solution. If the synthesis regressed, it's rejected.
+- **Asymmetric tool allocation** - personas that should read get `web, file`. Personas that should build get `terminal, file, web`. True specialization at the tool level via `hermes chat -t`.
 
 ## Quick Start
 
@@ -76,7 +76,7 @@ hermes config edit  # then edit ~/.hermes/skills/research/polygnosis/config.yaml
 # 3. Validate config
 python ~/.hermes/skills/research/polygnosis/scripts/validate_config.py
 
-# 4. Use it — just tell Hermes what you want in a chat:
+# 4. Use it - just tell Hermes what you want in a chat:
 "Use PolyGnosis to design a production-grade JWT auth middleware in Rust"
 # Hermes will load the skill and run the consensus protocol for you.
 ```
@@ -116,7 +116,7 @@ flowchart TD
 
 | Feature | Description |
 |---------|------------|
-| **Parallel Solve** | 3+ distinct model families solve independently from specialized personas — all at once via ThreadPoolExecutor. |
+| **Parallel Solve** | 3+ distinct model families solve independently from specialized personas - all at once via ThreadPoolExecutor. |
 | **Adversarial Critique** | A dedicated critic model aggressively hunts bugs, hallucinations, edge cases, security flaws, and architecture issues in every solution. |
 | **Formal Consensus Scoring** | LLM produces per-axis scores (0-10 across 5 dimensions). RRF + Borda Count determine the ranking deterministically. |
 | **Synthesis** | A synthesizer model extracts the strongest elements from all solutions into one unified output. |
@@ -127,12 +127,12 @@ flowchart TD
 
 | Feature | Description |
 |---------|------------|
-| **Dynamic Personas** | Orchestrator generates domain-specific expert roles from the problem statement — not generic labels. |
-| **Asymmetric Tool Allocation** | Persona determines tool access: `Security Auditor` → read-only (`web, file`), `Developer` → write-capable (`terminal, file, web`). Enforced via `hermes chat -t`. |
+| **Dynamic Personas** | Orchestrator generates domain-specific expert roles from the problem statement - not generic labels. |
+| **Asymmetric Tool Allocation** | Persona determines tool access: `Security Auditor` -> read-only (`web, file`), `Developer` -> write-capable (`terminal, file, web`). Enforced via `hermes chat -t`. |
 | **Reflexion Corrections Buffer** | CRITICAL/HIGH severity bugs and hallucinations are persisted to `.corrections_buffer.json` and injected into future solver prompts. |
-| **Early Resolution Circuit** | If all solvers reach unanimous consensus, critique + scoring phases are bypassed — massive cost and latency savings. |
+| **Early Resolution Circuit** | If all solvers reach unanimous consensus, critique + scoring phases are bypassed - massive cost and latency savings. |
 | **Graceful Degradation** | Solver timeouts or failures don't crash the pipeline. Minimum quorum threshold ensures enough models remain for meaningful consensus. |
-| **Debate Rounds** | Configurable critique → revise loop. Default: 2 rounds. |
+| **Debate Rounds** | Configurable critique -> revise loop. Default: 2 rounds. |
 
 ### Scoring Dimensions
 
@@ -147,14 +147,14 @@ flowchart TD
 ## Phases
 
 ```
-Phase 0: Orchestrate        → Problem statement + success criteria + dynamic personas
-Phase 1: Parallel Solve     → 3+ models solve from persona-driven prompts
-Phase 1.5: Early Resolution → Judge checks for unanimous consensus (bypass if yes)
-Phase 2: Adversarial Critique → Per-solution bug hunt + Reflexion buffer
-Phase 3: Consensus Scoring  → LLM per-axis scores → RRF + Borda ranking
-Phase 4: Synthesis          → Unified enterprise-grade solution
-Phase 5: Quality Gate       → Compare synthesis vs best individual solution
-Phase 6: Meta-Review        → Explain the consensus decision
+Phase 0: Orchestrate        -> Problem statement + success criteria + dynamic personas
+Phase 1: Parallel Solve     -> 3+ models solve from persona-driven prompts
+Phase 1.5: Early Resolution -> Judge checks for unanimous consensus (bypass if yes)
+Phase 2: Adversarial Critique -> Per-solution bug hunt + Reflexion buffer
+Phase 3: Consensus Scoring  -> LLM per-axis scores -> RRF + Borda ranking
+Phase 4: Synthesis          -> Unified enterprise-grade solution
+Phase 5: Quality Gate       -> Compare synthesis vs best individual solution
+Phase 6: Meta-Review        -> Explain the consensus decision
 ```
 
 ## Example
@@ -205,7 +205,7 @@ settings:
   rrf_k: 60                       # RRF constant
   quality_gate_enabled: true      # Reject regressed synthesis
   early_resolution_enabled: true  # Bypass critique on unanimous consensus
-  max_debate_rounds: 2            # Critique → revise iterations
+  max_debate_rounds: 2            # Critique -> revise iterations
   min_solvers_for_quorum: 2       # Minimum solvers before abort
 ```
 
@@ -242,13 +242,13 @@ polygnosis/
 
 ## Known Issues
 
-- **Model-specific subprocess hangs** — Some models (e.g. `gpt-5-mini` via certain providers) can hang in `hermes chat` subagent calls. If a model hangs for 600s+, try a different model or provider. Test with `hermes chat -q "ping" -m your-model` first.
-- **Critic JSON parsing** — If the critic returns non-JSON prose, it's wrapped with a default `PASS_WITH_ISSUES` score of 50. The pipeline continues — this is a graceful degradation path, not a failure.
-- **RRF + Borda tie-breaking** — When two solutions are genuinely equal across all axes, both get rank 1. The synthesizer is then free to draw from both. This is by design, not a bug.
+- **Model-specific subprocess hangs** - Some models (e.g. `gpt-5-mini` via certain providers) can hang in `hermes chat` subagent calls. If a model hangs for 600s+, try a different model or provider. Test with `hermes chat -q "ping" -m your-model` first.
+- **Critic JSON parsing** - If the critic returns non-JSON prose, it's wrapped with a default `PASS_WITH_ISSUES` score of 50. The pipeline continues - this is a graceful degradation path, not a failure.
+- **RRF + Borda tie-breaking** - When two solutions are genuinely equal across all axes, both get rank 1. The synthesizer is then free to draw from both. This is by design, not a bug.
 
 ## Built From
 
-PolyGnosis was built from the orchestration pattern pioneered by [PolyBrain](https://github.com/mosesman831/PolyBrain) — `config.yaml`-driven model routing, `hermes chat` subprocess execution, and `ThreadPoolExecutor` parallelism. PolyGnosis extends this foundation with adversarial consensus, formal scoring, quality gates, and Reflexion-based self-improvement.
+PolyGnosis was built from the orchestration pattern pioneered by [PolyBrain](https://github.com/mosesman831/PolyBrain) - `config.yaml`-driven model routing, `hermes chat` subprocess execution, and `ThreadPoolExecutor` parallelism. PolyGnosis extends this foundation with adversarial consensus, formal scoring, quality gates, and Reflexion-based self-improvement.
 
 ## License
 

@@ -1,0 +1,62 @@
+# PolyGnosis Configuration
+# Multi-model adversarial consensus pipeline for high-stakes reasoning.
+# Run: python polygnosis/scripts/validate_config.py
+
+models:
+  orchestrator: ""        # Model to decompose objective into the boardroom task
+  solver_1: ""            # Solver A — first independent model
+  solver_2: ""            # Solver B — second independent model
+  solver_3: ""            # Solver C — third independent model
+  critic: ""              # Adversarial reviewer (hunts bugs, logic flaws, hallucinations)
+  synthesizer: ""         # Builds the final consensus output
+  meta_reviewer: ""       # Explains why this synthesis was chosen + what was rejected
+  fallback: ""            # Used when a configured role model times out / is empty
+
+# Explicit solver models (overrides solver_1/2/3 if set)
+# Use when you want distinct model families for diversity
+solver_models:
+  - ""
+  - ""
+  - ""
+
+# Optional: force provider per role (empty = use Hermes default)
+providers:
+  orchestrator: ""
+  solver_1: ""
+  solver_2: ""
+  solver_3: ""
+  critic: ""
+  synthesizer: ""
+  meta_reviewer: ""
+  fallback: ""
+
+settings:
+  solver_count: 3               # Number of parallel solvers (min 2, max 5)
+  solver_timeout_sec: 600       # Per-solver timeout (complex tasks need longer)
+  critic_timeout_sec: 600       # Cross-critique review timeout
+  synthesizer_timeout_sec: 300  # Final synthesis timeout
+  meta_reviewer_timeout_sec: 180
+  orchestrator_timeout_sec: 120
+
+  # Scoring algorithm: "rrf" (Reciprocal Rank Fusion), "borda" (Borda Count),
+  # or "hybrid" (both, then average the rankings — most robust).
+  # Deterministic algorithms run on top of LLM per-axis scores to prevent
+  # a single opinionated critic from dominating.
+  scoring_algorithm: "hybrid"
+
+  # RRF constant k (default 60, standard BM25-derived value)
+  rrf_k: 60
+
+  max_debate_rounds: 2          # How many rounds of critique→revise (1 = single pass)
+  min_solvers_for_quorum: 2     # Minimum solvers required to proceed (graceful degradation)
+
+  # Constitutional Quality Gate: after synthesis, the system compares the
+  # synthesized output against the top-scoring individual solution. If synthesis
+  # introduces regressions, the individual solution is output instead.
+  quality_gate_enabled: true
+
+  # Early Resolution: after parallel solve, check if all solvers reached unanimous
+  # consensus on the core approach. If yes, bypass critique + scoring to save cost.
+  early_resolution_enabled: true
+
+  artifacts_dir: ".hermes/plans/polybrain/boardroom"

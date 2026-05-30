@@ -16,6 +16,8 @@
   <a href="https://github.com/mosesman831/PolyGnosis">
     <img src="https://img.shields.io/github/languages/top/mosesman831/PolyGnosis?style=for-the-badge" alt="Top language" />
   </a>
+  <a href='https://github.com/MShawon/github-clone-count-badge'><img alt='GitHub Clones' src='https://img.shields.io/badge/dynamic/json?color=success&label=Clone&query=count&url=https://gist.githubusercontent.com/mosesman831/46e9baf385ddb14bb52a73bdd112c533/raw/clone.json&logo=github&style=for-the-badge'></a>
+  <a href='https://github.com/MShawon/github-clone-count-badge'><img alt='GitHub Traffic' src='https://img.shields.io/badge/dynamic/json?color=success&label=Views&query=count&url=https://gist.githubusercontent.com/mosesman831/ed3ef0fdd74461022ced526311d69273/raw/traffic.json&logo=github&style=for-the-badge'></a>
 </p>
 
 <p align="center">

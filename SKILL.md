@@ -1,7 +1,7 @@
 ---
 name: polygnosis
 description: "Use when the user needs a verified, multi-model consensus answer for complex, high-stakes tasks. Invoke the PolyGnosis v3 adversarial debate pipeline: 3+ models solve independently with dynamic specializations and asymmetric tool allocation, a critic cross-reviews all solutions, severe bugs are logged to a Reflexion buffer, formal RRF+Borda ranking determines the winner, a Constitutional Quality Gate prevents synthesis regressions. Early Resolution circuit bypasses critique+scoring when solvers reach unanimous consensus. Do NOT use for simple queries or syntax fixes."
-version: 3.0.0
+version: 3.1.0
 author: "Moses / LatticeAG"
 license: GPL-3.0
 metadata:
@@ -169,13 +169,33 @@ settings:
 Validate:
 
 ```bash
-python ~/.hermes/skills/research/polybrain-boardroom/scripts/validate_config.py
+python ~/.hermes/skills/research/polygnosis/scripts/validate_config.py
 ```
+
+Then configure models (see config.yaml) and validate again.
 
 ## Usage
 
+### Agent Invocation (critical)
+
+**CRITICAL: Use `background: true` + `notify_on_complete: true` for all runs.** PolyGnosis runs multiple sequential LLM calls across 6 phases (orchestrator → 3+ parallel solvers → critique → scoring → synthesis → quality gate → meta-review), which takes 10–20 minutes total. A foreground terminal timeout will kill the entire process.
+
+```python
+terminal(
+    command='echo "<objective>" | python ~/.hermes/skills/research/polygnosis/scripts/boardroom_pipeline.py',
+    background=True,
+    notify_on_complete=True
+)
+```
+
+Then poll with `process(action='poll')` or wait for the notification. The orchestrator handles per-role timeouts internally via `config.yaml` (`solver_timeout_sec`: 600s, `critic_timeout_sec`: 600s, `synthesizer_timeout_sec`: 300s).
+
+After completion, read `final_output.md` from the run's artifacts directory and present it to the user.
+
+### Standalone (run directly)
+
 ```bash
-python ~/.hermes/skills/research/polybrain-boardroom/scripts/boardroom_pipeline.py
+python ~/.hermes/skills/research/polygnosis/scripts/boardroom_pipeline.py
 # Objective: <paste your problem>
 ```
 
@@ -243,6 +263,7 @@ Session-local: `PolyGnosis/.corrections_buffer.json` (Reflexion buffer)
 5. **Single model for all roles** — Reduces adversarial diversity. Use distinct model families.
 6. **Too many debate rounds** — Each round adds 2-5 minutes. `max_debate_rounds: 2` is the sweet spot.
 7. **gpt-5-mini hangs in subprocess** — Known Hermes issue. Avoid as solver/critic model.
+8. **Terminal foreground timeout kills the entire pipeline** — PolyGnosis takes 10–20 minutes across 6+ phases. If you run it as a foreground terminal command, the agent's terminal timeout kills the process before solvers finish. ALWAYS use `background: true` + `notify_on_complete: true`. This is the single most common failure mode when agents invoke the skill.
 
 ## Relationship to PolyBrain
 

@@ -213,6 +213,13 @@ settings:
 
 See [`config.yaml`](config.yaml) for all options.
 
+## PolyGnosis API
+
+HTTP service with the **full v3 boardroom** (RRF + Borda hybrid consensus) lives in
+[`polygnosis-api/`](polygnosis-api/). See [`SPEC-API.md`](SPEC-API.md). Model-only
+backend (no Hermes); async `POST /v1/boardroom` + poll. Extract that directory to
+publish as a separate public repo.
+
 ## Architecture Spec
 
 For a comprehensive technical specification of every algorithm, phase, and protocol
